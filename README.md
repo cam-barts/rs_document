@@ -10,7 +10,7 @@ I've been tinkering with different RAG projects and have landed on a set of proc
 # Installation
 
 ```sh
-pip install rs_document
+pip install rs-document
 ```
 
 # Usage
