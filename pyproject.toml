@@ -1,0 +1,92 @@
+[build-system]
+requires = ["maturin>=1.4,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "rs_document"
+version = "0.0.1"
+description = "LangChain's Document model, implemented in Rust using pyo3 and maturin"
+requires-python = ">=3.8"
+license = {file = "LICENSE.md"}
+keywords = ["LangChain", "Document", "cleanup", "splitter", "rust", "maturin", "pyo3"]
+authors = [
+  {name = "Cam Barts", email = "cam@coder.cam"},
+]
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: Filters",
+]
+
+[project.urls]
+homepage = "github.com/cam-barts/rs_document"
+
+[project.optional-dependencies]
+tests = [
+    "pytest",
+    "langchain"
+]
+dynamic = ["version"]
+
+[tool.maturin]
+python-source = "python"
+features = ["pyo3/extension-module"]
+
+
+[tool.ruff]
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
+select = ["ALL"]
+ignore = []
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+# Same as Black.
+line-length = 88
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+target-version = "py39"
+[tool.ruff.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 7
+
+[tool.ruff.pydocstyle]
+# Use Numpy-style docstrings.
+convention = "numpy"
+
+[tool.ruff.lint.per-file-ignores]
+"python/tests/test_*.py" = ["S101"] 
