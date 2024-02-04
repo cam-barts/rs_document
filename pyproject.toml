@@ -26,7 +26,7 @@ classifiers = [
 ]
 
 [project.urls]
-homepage = "github.com/cam-barts/rs_document"
+homepage = "https://github.com/cam-barts/rs_document"
 
 [project.optional-dependencies]
 tests = [
