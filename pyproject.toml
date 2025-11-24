@@ -6,7 +6,7 @@ build-backend = "maturin"
 name = "rs_document"
 version = "0.0.1"
 description = "LangChain's Document model, implemented in Rust using pyo3 and maturin"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = {file = "LICENSE.md"}
 keywords = ["LangChain", "Document", "cleanup", "splitter", "rust", "maturin", "pyo3"]
 authors = [
@@ -29,11 +29,20 @@ classifiers = [
 homepage = "https://github.com/cam-barts/rs_document"
 
 [project.optional-dependencies]
-tests = [
-    "pytest",
-    "langchain"
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "langchain-text-splitters>=0.0.1",
+    "hypothesis>=6.148.1",
 ]
-dynamic = ["version"]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "langchain-text-splitters>=0.0.1",
+    "ruff>=0.1.0",
+    "nox>=2023.4.0",
+    "prek>=0.2.0",
+]
 
 [tool.maturin]
 python-source = "python"
@@ -41,15 +50,11 @@ features = ["pyo3/extension-module"]
 
 
 [tool.ruff]
-# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
-select = ["ALL"]
-ignore = []
+# Target Python 3.10+ compatibility
+target-version = "py310"
+line-length = 88
 
-# Allow autofix for all enabled rules (when `--fix`) is provided.
-fixable = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
-unfixable = []
-
-# Exclude a variety of commonly ignored directories.
+# Exclude commonly ignored directories
 exclude = [
     ".bzr",
     ".direnv",
@@ -72,21 +77,163 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "target",
 ]
 
-# Same as Black.
-line-length = 88
+[tool.ruff.lint]
+# Enable comprehensive rule sets
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "I",     # isort
+    "N",     # pep8-naming
+    "UP",    # pyupgrade
+    "B",     # flake8-bugbear
+    "C4",    # flake8-comprehensions
+    "DTZ",   # flake8-datetimez
+    "T10",   # flake8-debugger
+    "EM",    # flake8-errmsg
+    "FA",    # flake8-future-annotations
+    "ISC",   # flake8-implicit-str-concat
+    "ICN",   # flake8-import-conventions
+    "G",     # flake8-logging-format
+    "PIE",   # flake8-pie
+    "PT",    # flake8-pytest-style
+    "Q",     # flake8-quotes
+    "RSE",   # flake8-raise
+    "RET",   # flake8-return
+    "SIM",   # flake8-simplify
+    "TID",   # flake8-tidy-imports
+    "TCH",   # flake8-type-checking
+    "ARG",   # flake8-unused-arguments
+    "PTH",   # flake8-use-pathlib
+    "PL",    # pylint
+    "TRY",   # tryceratops
+    "RUF",   # ruff-specific rules
+]
 
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-target-version = "py39"
-[tool.ruff.mccabe]
-# Unlike Flake8, default to a complexity level of 10.
-max-complexity = 7
+ignore = [
+    "E501",    # line too long (handled by formatter)
+    "PLR0913", # too many arguments
+    "PLR2004", # magic value comparison
+    "PT001",   # use @pytest.fixture() with parentheses (project style)
+    "PT023",   # use @pytest.mark.foo() with parentheses (project style)
+]
 
-[tool.ruff.pydocstyle]
-# Use Numpy-style docstrings.
-convention = "numpy"
+# Allow autofix for all enabled rules
+fixable = ["ALL"]
+unfixable = []
 
 [tool.ruff.lint.per-file-ignores]
-"python/tests/test_*.py" = ["S101"] 
+"python/tests/test_*.py" = [
+    "S101",    # assert usage
+    "PLR2004", # magic values in tests
+    "ARG001",  # unused function arguments (fixtures)
+    "E402",    # module level import not at top of file
+    "N802",    # function name should be lowercase
+    "PTH123",  # open() should be replaced by Path.open()
+    "PTH118",  # os.path.join() should be replaced by Path
+    "PTH120",  # os.path.dirname() should be replaced by Path.parent
+    "N806",    # variable in function should be lowercase
+    "RUF001",  # ambiguous unicode characters (intentional in test strings)
+]
+"python/rs_document/__init__.py" = [
+    "F403",    # star imports from PyO3 module
+    "F405",    # names may be undefined from star imports
+]
+"python/rs_document/post_processors.py" = [
+    "ARG001",  # unused function arguments
+    "RET505",  # unnecessary else after return
+    "RET504",  # unnecessary assignment before return
+    "RUF001",  # ambiguous unicode characters (intentional in test strings)
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.isort]
+known-first-party = ["rs_document"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.coverage.run]
+source = ["python/rs_document"]
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/site-packages/*",
+]
+
+[tool.coverage.report]
+# Fail if coverage drops below 80% (considering the hybrid nature)
+fail_under = 80
+precision = 2
+show_missing = true
+skip_covered = false
+
+exclude_also = [
+    # Don't complain about missing debug-only code
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run
+    "if 0:",
+    "if __name__ == .__main__.:",
+
+    # Type checking
+    "if TYPE_CHECKING:",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+check_untyped_defs = true
+disallow_untyped_defs = false  # Gradual typing
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = "rs_document.*"
+ignore_errors = true  # PyO3 generated code
+
+[dependency-groups]
+dev = [
+    "commitizen>=4.10.0",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.7.0",
+    "mkdocstrings[python]>=0.30.1",
+    "pymdown-extensions>=10.17.1",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.0.1"
+version_scheme = "semver"
+version_provider = "pep621"
+update_changelog_on_bump = true
+major_version_zero = true
+tag_format = "v$version"
+version_files = [
+    "pyproject.toml:version",
+    "Cargo.toml:version",
+]

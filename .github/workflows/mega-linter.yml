@@ -1,0 +1,74 @@
+---
+name: MegaLinter
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  megalinter:
+    name: MegaLinter
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: MegaLinter
+        uses: oxsecurity/megalinter/flavors/python@v7
+        env:
+          VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # Enable only relevant linters for this project
+          ENABLE_LINTERS: >-
+            PYTHON_RUFF,
+            PYTHON_MYPY,
+            RUST_CLIPPY,
+            MARKDOWN_MARKDOWNLINT,
+            YAML_YAMLLINT,
+            BASH_SHELLCHECK
+
+          # Disable linters we don't use (redundant with ruff)
+          DISABLE_LINTERS: >-
+            PYTHON_PYLINT,
+            PYTHON_FLAKE8,
+            PYTHON_BLACK,
+            PYTHON_ISORT,
+            PYTHON_BANDIT
+
+          # Configuration
+          MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.json
+          YAML_YAMLLINT_CONFIG_FILE: .yamllint.yml
+
+          # Report settings
+          PRINT_ALPACA: false
+          GITHUB_STATUS_REPORTER: true
+          GITHUB_COMMENT_REPORTER: true
+
+          # Set to warning for initial rollout
+          DISABLE_ERRORS: false
+
+          # Output
+          MEGALINTER_VOLUME_ROOT: /tmp
+
+      - name: Upload MegaLinter artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MegaLinter-reports
+          path: |
+            megalinter-reports
+            mega-linter.log
+          retention-days: 30

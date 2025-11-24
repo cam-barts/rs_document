@@ -12,3 +12,29 @@ crate-type = ["cdylib"]
 pyo3 = "0.19.0"
 regex = "1"
 rayon = "1.5"
+
+# Tarpaulin configuration for code coverage
+[package.metadata.tarpaulin]
+# Run with: cargo tarpaulin --out Html --output-dir coverage
+command = "test"
+timeout = "5m"
+follow-exec = true
+out = ["Html", "Json", "Lcov"]
+output-dir = "coverage/rust"
+
+# Include all source files
+include-pattern = ["src/.*"]
+exclude-pattern = ["target/.*", ".cargo/.*"]
+
+# Coverage thresholds
+fail-under = 80.0
+
+# Don't fail on IO errors (important for PyO3 tests that might not run in all environments)
+ignore-panics = false
+ignore-tests = false
+
+# LLVM-based coverage configuration (alternative to tarpaulin)
+# Run with: cargo llvm-cov --html --output-dir coverage/rust-llvm
+[package.metadata.llvm-cov]
+html = true
+open = false

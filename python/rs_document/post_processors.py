@@ -1,32 +1,33 @@
 """Vendored post processors from Unstructured.io"""
-import sys
-import re
-import unicodedata
-from typing import List, Final, Callable
 
+import re
+import sys
+import unicodedata
+from collections.abc import Callable
+from typing import Final
 
 LINE_BREAK = r"(?<=\n)"
 LINE_BREAK_RE = re.compile(LINE_BREAK)
 
-UNICODE_BULLETS: Final[List[str]] = [
+UNICODE_BULLETS: Final[list[str]] = [
     "\u0095",
     "\u2022",
     "\u2023",
     "\u2043",
     "\u3164",
-    "\u204C",
-    "\u204D",
+    "\u204c",
+    "\u204d",
     "\u2219",
-    "\u25CB",
-    "\u25CF",
-    "\u25D8",
-    "\u25E6",
+    "\u25cb",
+    "\u25cf",
+    "\u25d8",
+    "\u25e6",
     "\u2619",
     "\u2765",
     "\u2767",
-    "\u29BE",
-    "\u29BF",
-    "\u002D",
+    "\u29be",
+    "\u29bf",
+    "\u002d",
     "",
     "\*",  # noqa: W605 NOTE(robinson) - skipping qa because we need the escape for the regex
     "\x95",

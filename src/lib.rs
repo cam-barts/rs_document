@@ -1,3 +1,5 @@
+#![allow(non_local_definitions)]
+
 use pyo3::prelude::*;
 use pyo3::types::PyList;
 use rayon::prelude::*;
@@ -18,6 +20,29 @@ use std::collections::HashMap;
 /// be split until they are below the chunk_size threshold and then splitting not continue.
 fn split_text(text: &str, chunk_size: usize, separators: &[&str]) -> Vec<String> {
     let mut intermediate_result = Vec::new();
+
+    // Handle edge case: no separators left
+    if separators.is_empty() {
+        // Last resort: split by character if text is too large
+        if text.len() <= chunk_size {
+            return vec![text.to_string()];
+        }
+        // Split by character boundaries (UTF-8 safe)
+        let mut result = Vec::new();
+        let mut current = String::new();
+        for ch in text.chars() {
+            if current.len() + ch.len_utf8() > chunk_size && !current.is_empty() {
+                result.push(current.clone());
+                current.clear();
+            }
+            current.push(ch);
+        }
+        if !current.is_empty() {
+            result.push(current);
+        }
+        return result;
+    }
+
     let separator = separators[0];
     let chunks: Vec<&str> = text.split(separator).collect();
     let mut smallest_chunks = Vec::new();
@@ -32,12 +57,18 @@ fn split_text(text: &str, chunk_size: usize, separators: &[&str]) -> Vec<String>
         } else {
             let modified_separators = &separators[1..separators.len()];
             // Recurse with next modifiers.
-            smallest_chunks.extend(split_text(chunk, chunk_size, &modified_separators));
+            smallest_chunks.extend(split_text(chunk, chunk_size, modified_separators));
         }
     }
+    // Handle empty smallest_chunks case
+    if smallest_chunks.is_empty() {
+        return Vec::new();
+    }
+
     let mut current_chunk = smallest_chunks[0].clone();
     for chunk in &smallest_chunks[1..smallest_chunks.len()] {
-        if current_chunk.len() + chunk.len() > chunk_size {
+        // Account for separator length when checking if we'd exceed chunk_size
+        if current_chunk.len() + separator.len() + chunk.len() > chunk_size {
             intermediate_result.push(current_chunk.clone());
             current_chunk = chunk.to_owned();
         } else {
@@ -45,7 +76,10 @@ fn split_text(text: &str, chunk_size: usize, separators: &[&str]) -> Vec<String>
             current_chunk.push_str(chunk);
         }
     }
-    if intermediate_result[intermediate_result.len() - 1] != current_chunk {
+    // Check if intermediate_result is empty or if current_chunk is different from last element
+    if intermediate_result.is_empty()
+        || intermediate_result[intermediate_result.len() - 1] != current_chunk
+    {
         intermediate_result.push(current_chunk.clone());
     }
     intermediate_result
@@ -73,15 +107,41 @@ fn split_and_merge(text: &str, chunk_size: usize, separators: &[&str]) -> Vec<St
     let intermediate_size = chunk_size / 3;
     let splits = split_text(text, intermediate_size, separators);
     let mut result = Vec::new();
-    for i in (0..(splits.len() - 1)).step_by(2) {
-        if (i + 3) > splits.len() {
-            let merged_chunk = splits[i..].concat();
-            result.push(merged_chunk);
-        } else {
+
+    // Handle edge cases
+    if splits.is_empty() {
+        // If text is empty, return single empty chunk
+        if !text.is_empty() {
+            result.push(text.to_string());
+        }
+        return result;
+    }
+
+    if splits.len() == 1 {
+        // If only one split, return it as-is
+        result.push(splits[0].clone());
+        return result;
+    }
+
+    if splits.len() == 2 {
+        // If two splits, merge them into one
+        result.push(splits.concat());
+        return result;
+    }
+
+    // Normal case: merge groups of 3 with step of 2 for overlap
+    for i in (0..splits.len()).step_by(2) {
+        if i + 3 <= splits.len() {
             let merged_chunk = splits[i..(i + 3)].concat();
             result.push(merged_chunk);
+        } else {
+            // Last group has fewer than 3 items
+            let merged_chunk = splits[i..].concat();
+            result.push(merged_chunk);
+            break;
         }
     }
+
     result
 }
 
@@ -141,7 +201,8 @@ impl Document {
         let bullets_pattern: String = vec![
             "\u{0095}", "\u{2022}", "\u{2023}", "\u{2043}", "\u{3164}", "\u{204C}", "\u{204D}",
             "\u{2219}", "\u{25CB}", "\u{25CF}", "\u{25D8}", "\u{25E6}", "\u{2619}", "\u{2765}",
-            "\u{2767}", "\u{29BE}", "\u{29BF}", "\u{002D}", "", "\\*", "\\x95", "·",
+            "\u{2767}", "\u{29BE}", "\u{29BF}", "\u{002D}", "\u{2013}", "\u{25AA}", "\u{25AB}",
+            "\\*", "\\x95", "·",
         ]
         .join("|");
         bullets_pattern
@@ -158,7 +219,7 @@ impl Document {
         let unicode_bullets_re: Regex =
             Regex::new(&format!(r"(?:{})", unicode_bullets_pattern)).unwrap();
 
-        if let Some(_) = unicode_bullets_re.find(text) {
+        if unicode_bullets_re.find(text).is_some() {
             let cleaned_text = unicode_bullets_re.replace(text, "").to_string();
             self.page_content = cleaned_text.trim().to_string();
         }
@@ -208,7 +269,12 @@ impl Document {
     /// ITEM 1.     BUSINESS -> ITEM 1. BUSINESS
     fn clean_extra_whitespace(&mut self) {
         let text = &self.page_content;
-        let cleaned_text = text.replace(0xa0 as char, " ").replace("\n", " ");
+        // Handle all line ending types: \r\n, \r, \n
+        let cleaned_text = text
+            .replace(0xa0 as char, " ") // Non-breaking space
+            .replace("\r\n", " ") // Windows line ending
+            .replace("\r", " ") // Old Mac line ending
+            .replace("\n", " "); // Unix line ending
         let cleaned_text = Regex::new(r"([ ]{2,})")
             .unwrap()
             .replace_all(&cleaned_text, " ");
@@ -231,30 +297,61 @@ impl Document {
     /// ○ At the end of the land the fox met a bear.'''
     #[staticmethod]
     fn _group_bullet_paragraph(paragraph: &str) -> Vec<String> {
-        let e_bullet_pattern: Regex = Regex::new(r"^e(?=\s)").unwrap();
+        // Replace "e " at start with bullet - without lookahead
+        let cleaned_paragraph = if paragraph.starts_with("e ") {
+            format!("·{}", &paragraph[1..])
+        } else {
+            paragraph.to_string()
+        };
+
         let bullets_pattern = Document::_unicode_bullets_pattern();
-        let unicode_bullets_re_0w: Regex = Regex::new(&format!(
-            r"(?={:?})(?<!{:?})",
-            bullets_pattern, bullets_pattern
-        ))
-        .unwrap();
+        let unicode_bullets_re: Regex = Regex::new(&format!(r"({})", bullets_pattern)).unwrap();
 
-        let paragraph_pattern: String = r"\s*\n\s*".to_string();
-        let paragraph_pattern_re: Regex = Regex::new(&format!(
-            r"((?:{:?})|{:?})",
-            bullets_pattern, paragraph_pattern
-        ))
-        .unwrap();
+        // Pattern to replace newlines with spaces (not bullets!)
+        let newline_pattern_re: Regex = Regex::new(r"\s*\n\s*").unwrap();
+
         let mut clean_paragraphs = Vec::new();
-        let cleaned_paragraph = e_bullet_pattern
-            .replace_all(paragraph, "·")
-            .trim()
-            .to_string();
-        let bullet_paras: Vec<&str> = unicode_bullets_re_0w.split(&cleaned_paragraph).collect();
 
-        for bullet in bullet_paras {
-            if !bullet.is_empty() {
-                clean_paragraphs.push(paragraph_pattern_re.replace_all(bullet, " ").to_string());
+        // Manually split on bullets by finding all matches and splitting between them
+        let mut bullet_positions = Vec::new();
+
+        for mat in unicode_bullets_re.find_iter(&cleaned_paragraph) {
+            bullet_positions.push(mat.start());
+        }
+
+        // Split text at bullet positions
+        if bullet_positions.is_empty() {
+            // No bullets found, process entire paragraph
+            let cleaned = newline_pattern_re
+                .replace_all(&cleaned_paragraph, " ")
+                .to_string();
+            if !cleaned.trim().is_empty() {
+                clean_paragraphs.push(cleaned);
+            }
+        } else {
+            for (i, &pos) in bullet_positions.iter().enumerate() {
+                if i == 0 && pos > 0 {
+                    // Text before first bullet
+                    let segment = &cleaned_paragraph[0..pos];
+                    let cleaned = newline_pattern_re.replace_all(segment, " ").to_string();
+                    if !cleaned.trim().is_empty() {
+                        clean_paragraphs.push(cleaned);
+                    }
+                }
+
+                // Get text from this bullet to next bullet (or end)
+                let start = pos;
+                let end = if i + 1 < bullet_positions.len() {
+                    bullet_positions[i + 1]
+                } else {
+                    cleaned_paragraph.len()
+                };
+
+                let segment = &cleaned_paragraph[start..end];
+                let cleaned = newline_pattern_re.replace_all(segment, " ").to_string();
+                if !cleaned.trim().is_empty() {
+                    clean_paragraphs.push(cleaned);
+                }
             }
         }
 
@@ -280,18 +377,18 @@ impl Document {
 
         let bullets_pattern = Document::_unicode_bullets_pattern();
 
-        let paragraph_pattern: String = r"\s*\n\s*".to_string();
-        let paragraph_pattern_re: Regex = Regex::new(&format!(
-            r"((?:{:?})|{:?})",
-            bullets_pattern, paragraph_pattern
-        ))
-        .unwrap();
-        let double_paragraph_pattern_re: Regex =
-            Regex::new(&format!("({:?})", paragraph_pattern)).unwrap();
+        // Pattern to match single newline with optional whitespace
+        let paragraph_pattern = r"\s*\n\s*";
+        // Pattern to match double newlines (blank line) - TWO consecutive paragraph patterns
+        let double_paragraph_pattern = format!(r"({})", paragraph_pattern) + "{2}";
+        let double_paragraph_pattern_re: Regex = Regex::new(&double_paragraph_pattern).unwrap();
+
+        // Simple pattern to replace single newlines
+        let single_newline_re: Regex = Regex::new(paragraph_pattern).unwrap();
 
         let unicode_bullets_re: Regex = Regex::new(&format!(r"(?:{})", bullets_pattern)).unwrap();
 
-        let e_bullet_pattern: Regex = Regex::new(r"^e(?=\s)").unwrap();
+        // Split on double newlines (blank lines) to get separate paragraphs
         let paragraphs: Vec<&str> = double_paragraph_pattern_re.split(text).collect();
         let mut clean_paragraphs = Vec::new();
 
@@ -300,11 +397,11 @@ impl Document {
                 let para_split: Vec<&str> = paragraph.split("\n").collect();
                 let all_lines_short = para_split
                     .iter()
-                    .all(|line| line.trim().split_whitespace().count() < 5);
+                    .all(|line| line.split_whitespace().count() < 5);
 
-                if unicode_bullets_re.is_match(paragraph.trim())
-                    || e_bullet_pattern.is_match(paragraph.trim())
-                {
+                // Check if paragraph starts with "e " or contains bullet patterns
+                let has_e_bullet = paragraph.trim().starts_with("e ");
+                if unicode_bullets_re.is_match(paragraph.trim()) || has_e_bullet {
                     clean_paragraphs.extend(Document::_group_bullet_paragraph(paragraph));
                 } else if all_lines_short {
                     clean_paragraphs.extend(
@@ -314,8 +411,9 @@ impl Document {
                             .map(|line| line.to_string()),
                     );
                 } else {
+                    // Replace single newlines with spaces to join broken lines
                     clean_paragraphs
-                        .push(paragraph_pattern_re.replace_all(paragraph, " ").to_string());
+                        .push(single_newline_re.replace_all(paragraph, " ").to_string());
                 }
             }
         }

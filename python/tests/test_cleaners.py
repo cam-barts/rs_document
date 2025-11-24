@@ -1,4 +1,3 @@
-import pytest
 from rs_document import Document
 
 

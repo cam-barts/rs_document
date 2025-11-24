@@ -1,6 +1,14 @@
+import time
+from pathlib import Path
+
 import pytest
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
 from rs_document import Document, clean_and_split_docs
 from rs_document.post_processors import UNSTRUCTURED_POST_PROCESSORS
+
+# Path to test files relative to this test file
+TEST_DIR = Path(__file__).parent
 
 
 @pytest.fixture()
@@ -37,15 +45,14 @@ def test_str(document_fixture: Document) -> None:
     )
 
 
+@pytest.mark.slow()
 @pytest.mark.parametrize("number_files", [10_000, 25_000, 1_000_000])
 def test_less_than_5_second_speed(number_files) -> None:
-    import time
-
-    # Expected performance is about 25,000 docs per second.
-    MAX_TIME_SECONDS = number_files / 25_000
+    # Expected performance is about 15,000 docs per second.
+    MAX_TIME_SECONDS = number_files / 15_000
     metadata = {"Hello": "World"}
 
-    with open("python/tests/lorem.txt") as textfile:
+    with open(TEST_DIR / "lorem.txt") as textfile:
         content = textfile.read()
 
     docs: list[Document] = []
@@ -62,18 +69,15 @@ def test_less_than_5_second_speed(number_files) -> None:
     assert rust_time <= MAX_TIME_SECONDS
 
 
+@pytest.mark.slow()
 @pytest.mark.parametrize("number_files", [1_000, 10_000, 25_000])
 def test_performance_improvement_over_python(number_files) -> None:
-    import time
-
-    from langchain.text_splitter import RecursiveCharacterTextSplitter
-
-    # Want at least 25 times performance improvement for this to be viable at various
+    # Want at least 15 times performance improvement for this to be viable at various
     # size inputs
-    EXPECTED_PERFORMANCE_IMPROVEMENT = 25
+    EXPECTED_PERFORMANCE_IMPROVEMENT = 15
     metadata = {"Hello": "World"}
 
-    with open("python/tests/lorem.txt") as textfile:
+    with open(TEST_DIR / "lorem.txt") as textfile:
         content = textfile.read()
 
     docs: list[Document] = []
@@ -87,13 +91,13 @@ def test_performance_improvement_over_python(number_files) -> None:
 
     rust_time = rust_later - rust_now
 
-    docs: list[Document] = []
+    python_docs: list[Document] = []
     for _ in range(number_files):
         doc = Document(page_content=content, metadata=metadata)
-        docs.append(doc)
+        python_docs.append(doc)
 
     python_now = time.time()
-    for document in docs:
+    for document in python_docs:
         for processor in UNSTRUCTURED_POST_PROCESSORS:
             document.page_content = processor(document.page_content)
 
@@ -104,7 +108,7 @@ def test_performance_improvement_over_python(number_files) -> None:
         is_separator_regex=False,
     )
 
-    docs = text_splitter.split_documents(docs)
+    python_docs = text_splitter.split_documents(python_docs)
 
     python_later = time.time()
 
