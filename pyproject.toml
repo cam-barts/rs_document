@@ -226,7 +226,7 @@ dev = [
 ]
 
 [tool.commitizen]
-name = "cz_conventional_commits"
+name = "cz_customize"
 version = "0.1.0"
 version_scheme = "semver"
 version_provider = "pep621"
@@ -238,18 +238,36 @@ version_files = [
     "Cargo.toml:version",
 ]
 
-# Custom bump pattern: all conventional commits trigger bumps
-# feat = MINOR, everything else = PATCH
-bump_pattern = "^(feat|fix|docs|build|chore|style|refactor|perf|test|ci)"
+[tool.commitizen.customize]
+message_template = "{{change_type}}:{% if show_message %} {{message}}{% endif %}"
+example = "feat: this is a new feature"
+schema = "<type>: <body>"
+schema_pattern = "^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(\\(\\w+\\))?!?:(\\ .*)"
+bump_pattern = "^(BREAKING[- ]CHANGE|feat|fix|refactor|perf|docs|build|chore|ci|test|style)"
+bump_map_major_version_zero = {"BREAKING CHANGE" = "MINOR", "BREAKING-CHANGE" = "MINOR", "feat" = "MINOR", "fix" = "PATCH", "refactor" = "PATCH", "perf" = "PATCH", "docs" = "PATCH", "build" = "PATCH", "chore" = "PATCH", "ci" = "PATCH", "test" = "PATCH", "style" = "PATCH"}
+change_type_order = ["BREAKING CHANGE", "feat", "fix", "refactor", "perf", "docs", "build", "chore", "ci", "test", "style"]
 
-[tool.commitizen.bump_map]
+[tool.commitizen.customize.bump_map]
+"BREAKING CHANGE" = "MAJOR"
+"BREAKING-CHANGE" = "MAJOR"
 feat = "MINOR"
 fix = "PATCH"
+refactor = "PATCH"
+perf = "PATCH"
 docs = "PATCH"
 build = "PATCH"
 chore = "PATCH"
-style = "PATCH"
-refactor = "PATCH"
-perf = "PATCH"
-test = "PATCH"
 ci = "PATCH"
+test = "PATCH"
+style = "PATCH"
+
+[[tool.commitizen.customize.questions]]
+type = "list"
+name = "change_type"
+choices = [{value = "feat", name = "feat: A new feature"}, {value = "fix", name = "fix: A bug fix"}, {value = "docs", name = "docs: Documentation changes"}, {value = "style", name = "style: Code style changes"}, {value = "refactor", name = "refactor: Code refactoring"}, {value = "perf", name = "perf: Performance improvements"}, {value = "test", name = "test: Test changes"}, {value = "build", name = "build: Build system changes"}, {value = "ci", name = "ci: CI configuration changes"}, {value = "chore", name = "chore: Other changes"}]
+message = "Select the type of change you are committing"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "message"
+message = "Write a short and imperative summary of the code changes: (lower case and no period)"
