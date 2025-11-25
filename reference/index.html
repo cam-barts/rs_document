@@ -1677,40 +1677,50 @@
 <h2 id="quick-navigation">Quick Navigation<a class="headerlink" href="#quick-navigation" title="Permanent link">&para;</a></h2>
 <h3 id="core-components">Core Components<a class="headerlink" href="#core-components" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong><a href="document-class/">Document Class</a></strong> - Document constructor and attributes</li>
+<li><strong><a href="document-class/">Document Class</a></strong> - Document constructor and attributes<ul>
 <li>Constructor and initialization</li>
 <li><code>page_content</code> attribute</li>
 <li><code>metadata</code> attribute</li>
 </ul>
+</li>
+</ul>
 <h3 id="document-processing">Document Processing<a class="headerlink" href="#document-processing" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong><a href="cleaning-methods/">Cleaning Methods</a></strong> - Text cleaning and normalization</li>
+<li>
+<p><strong><a href="cleaning-methods/">Cleaning Methods</a></strong> - Text cleaning and normalization</p>
+<ul>
 <li><code>clean()</code> - Run all cleaners</li>
 <li><code>clean_extra_whitespace()</code> - Normalize whitespace</li>
 <li><code>clean_ligatures()</code> - Convert typographic ligatures</li>
 <li><code>clean_bullets()</code> - Remove bullet characters</li>
 <li><code>clean_non_ascii_chars()</code> - Remove non-ASCII characters</li>
-<li>
-<p><code>group_broken_paragraphs()</code> - Join split paragraphs</p>
+<li><code>group_broken_paragraphs()</code> - Join split paragraphs</li>
+</ul>
 </li>
 <li>
 <p><strong><a href="splitting-methods/">Splitting Methods</a></strong> - Document chunking strategies</p>
-</li>
+<ul>
 <li><code>recursive_character_splitter()</code> - Smart splitting with overlap</li>
 <li><code>split_on_num_characters()</code> - Fixed-size splitting</li>
 </ul>
+</li>
+</ul>
 <h3 id="utilities">Utilities<a class="headerlink" href="#utilities" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong><a href="utility-functions/">Utility Functions</a></strong> - Batch processing and helpers</li>
+<li><strong><a href="utility-functions/">Utility Functions</a></strong> - Batch processing and helpers<ul>
 <li><code>clean_and_split_docs()</code> - Parallel processing for multiple documents</li>
+</ul>
+</li>
 </ul>
 <h3 id="reference-information">Reference Information<a class="headerlink" href="#reference-information" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong><a href="types-and-constants/">Types and Constants</a></strong> - Type hints, defaults, and error handling</li>
+<li><strong><a href="types-and-constants/">Types and Constants</a></strong> - Type hints, defaults, and error handling<ul>
 <li>Type signatures</li>
 <li>Default values and constants</li>
 <li>Error handling patterns</li>
 <li>Compatibility notes</li>
+</ul>
+</li>
 </ul>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>rs_document is a high-performance Python library for document processing, built with Rust for speed. The library provides:</p>
