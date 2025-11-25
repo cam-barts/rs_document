@@ -1,5 +1,14 @@
 # Changelog
 
+# Changelog
+
+
+## v0.1.6 (2025-11-25)
+
+### Docs
+
+- **pyproject.toml**: cz commit questions, changelog updates
+
 ## v0.1.5 (2025-11-25)
 
 ### Docs
