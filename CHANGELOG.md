@@ -1,3 +1,14 @@
+## v0.1.3 (2025-11-25)
+
+
+- fix(github-release): clean up changelog formatting in release notes
+- - Remove double bullets (- -) from changelog extraction
+- Remove emoji lines, Co-Authored-By, and Signed-off-by lines
+- Remove empty bullet lines
+- This produces cleaner, more readable release notes
+- 🤖 Generated with [Claude Code](https://claude.com/claude-code)
+- Co-Authored-By: Claude <noreply@anthropic.com>
+
 ## v0.1.2 (2025-11-25)
 
 
