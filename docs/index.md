@@ -180,6 +180,31 @@ This project welcomes contributions! See the developer documentation in the `dev
 - `dev/claude.md` - Project architecture and design
 - `dev/coverage.md` - Testing and coverage strategy
 
+## Attribution & Credits
+
+This project builds upon and is inspired by the following open source projects:
+
+### LangChain
+
+- **Source**: [https://github.com/langchain-ai/langchain](https://github.com/langchain-ai/langchain)
+- **Author**: LangChain AI
+- **License**: MIT
+- **Usage**: The Document class is designed to be compatible with LangChain's Document model. The recursive character splitter is based on LangChain's RecursiveCharacterTextSplitter algorithm, reimplemented in Rust for performance.
+
+### Unstructured.io
+
+- **Source**: [https://github.com/Unstructured-IO/unstructured](https://github.com/Unstructured-IO/unstructured)
+- **Author**: Unstructured Technologies, Inc.
+- **License**: Apache 2.0
+- **Usage**: The text cleaning functions are Rust reimplementations of Unstructured.io's post-processor cleaners, maintaining compatible behavior while providing significant performance improvements.
+
+### Diataxis
+
+- **Source**: [https://diataxis.fr](https://diataxis.fr)
+- **Author**: Daniele Procida
+- **License**: Creative Commons
+- **Usage**: Documentation structure follows the Diataxis framework for organizing technical documentation into tutorials, how-to guides, reference, and explanation sections.
+
 ## License
 
 See [LICENSE.md](https://github.com/cam-barts/rs_document/blob/main/LICENSE.md) for details.
