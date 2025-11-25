@@ -12,7 +12,7 @@ RAG applications.
 
 ## Quick Links
 
-📚 **[Full Documentation](https://yourusername.github.io/rs_document)** -
+📚 **[Full Documentation](https://cam-barts.github.io/rs_document)** -
 Visit our documentation site for detailed guides
 
 ## Installation
@@ -56,10 +56,11 @@ implementation provides:
 
 ## Documentation
 
-- [Installation & Usage](https://yourusername.github.io/rs_document)
-- [Contributing Guide](https://yourusername.github.io/rs_document/contributing)
-- [Coverage Reports](https://yourusername.github.io/rs_document/coverage)
-- [Development Setup](https://yourusername.github.io/rs_document/claude)
+- [Full Documentation](https://cam-barts.github.io/rs_document) - Complete guides and API reference
+- [Tutorial](docs/tutorial/index.md) - Get started with rs_document
+- [How-To Guides](docs/how-to/index.md) - Task-oriented guides
+- [API Reference](docs/reference/index.md) - Complete API documentation
+- [License](LICENSE.md) - Project license
 
 ## Development
 

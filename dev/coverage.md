@@ -35,14 +35,14 @@ Testing Path:
 **102 Total Python Tests:**
 
 - 76 unit and comprehensive tests
-  - `test_all.py`: 10 tests (basic integration)
-  - `test_cleaners_comprehensive.py`: 38 tests (all cleaner functions)
-  - `test_splitters_comprehensive.py`: 28 tests (all splitter functions)
+    - `test_all.py`: 10 tests (basic integration)
+    - `test_cleaners_comprehensive.py`: 38 tests (all cleaner functions)
+    - `test_splitters_comprehensive.py`: 28 tests (all splitter functions)
 - 20 property-based tests (`test_hypothesis_properties.py`)
-  - Core invariants (5): chunk size limits, metadata preservation, determinism
-  - Edge cases (5): empty docs, small chunks, unicode, special chars
-  - Format handling (4): line endings, bullets, ligatures
-  - Advanced (6): parallel consistency, order preservation, emoji handling
+    - Core invariants (5): chunk size limits, metadata preservation, determinism
+    - Edge cases (5): empty docs, small chunks, unicode, special chars
+    - Format handling (4): line endings, bullets, ligatures
+    - Advanced (6): parallel consistency, order preservation, emoji handling
 - 6 performance benchmark tests (marked `@pytest.mark.slow`)
 
 ## Running Coverage Reports

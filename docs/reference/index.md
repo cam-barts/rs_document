@@ -12,36 +12,36 @@ Complete reference documentation for all public APIs in rs_document.
 ### Core Components
 
 - **[Document Class](document-class.md)** - Document constructor and attributes
-  - Constructor and initialization
-  - `page_content` attribute
-  - `metadata` attribute
+    - Constructor and initialization
+    - `page_content` attribute
+    - `metadata` attribute
 
 ### Document Processing
 
 - **[Cleaning Methods](cleaning-methods.md)** - Text cleaning and normalization
-  - `clean()` - Run all cleaners
-  - `clean_extra_whitespace()` - Normalize whitespace
-  - `clean_ligatures()` - Convert typographic ligatures
-  - `clean_bullets()` - Remove bullet characters
-  - `clean_non_ascii_chars()` - Remove non-ASCII characters
-  - `group_broken_paragraphs()` - Join split paragraphs
+    - `clean()` - Run all cleaners
+    - `clean_extra_whitespace()` - Normalize whitespace
+    - `clean_ligatures()` - Convert typographic ligatures
+    - `clean_bullets()` - Remove bullet characters
+    - `clean_non_ascii_chars()` - Remove non-ASCII characters
+    - `group_broken_paragraphs()` - Join split paragraphs
 
 - **[Splitting Methods](splitting-methods.md)** - Document chunking strategies
-  - `recursive_character_splitter()` - Smart splitting with overlap
-  - `split_on_num_characters()` - Fixed-size splitting
+    - `recursive_character_splitter()` - Smart splitting with overlap
+    - `split_on_num_characters()` - Fixed-size splitting
 
 ### Utilities
 
 - **[Utility Functions](utility-functions.md)** - Batch processing and helpers
-  - `clean_and_split_docs()` - Parallel processing for multiple documents
+    - `clean_and_split_docs()` - Parallel processing for multiple documents
 
 ### Reference Information
 
 - **[Types and Constants](types-and-constants.md)** - Type hints, defaults, and error handling
-  - Type signatures
-  - Default values and constants
-  - Error handling patterns
-  - Compatibility notes
+    - Type signatures
+    - Default values and constants
+    - Error handling patterns
+    - Compatibility notes
 
 ## Overview
 

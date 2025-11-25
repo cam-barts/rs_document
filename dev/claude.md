@@ -18,8 +18,8 @@ This is a hybrid Rust/Python project that provides high-performance text process
 
 - **Document struct**: PyO3-wrapped struct with `page_content` (String) and `metadata` (HashMap<String, String>)
 - **Text splitting**: Two main algorithms
-  - `split_text()`: Recursively splits text by separators until chunks are below target size
-  - `split_and_merge()`: Creates overlapping chunks (1/3 overlap) by splitting to 1/3 target size then merging groups of 3
+    - `split_text()`: Recursively splits text by separators until chunks are below target size
+    - `split_and_merge()`: Creates overlapping chunks (1/3 overlap) by splitting to 1/3 target size then merging groups of 3
 - **Text cleaners**: Methods on Document struct that mutate `page_content` in-place
 - **Parallel processing**: `clean_and_split_docs()` uses rayon for parallel document processing
 - **PyO3 module**: Exports Document class and clean_and_split_docs function to Python
@@ -207,10 +207,10 @@ The project has comprehensive test coverage:
 - **Unit tests**: Each cleaner and splitter method tested individually
 - **Edge case tests**: Empty strings, unicode, special characters, very long inputs
 - **Property-based tests (Hypothesis)**: Automated generation of test inputs to find edge cases
-  - 20 property tests in `test_hypothesis_properties.py`
-  - Tests invariants like "chunks never exceed size", "metadata always preserved", "cleaners converge"
-  - Found 2 critical bugs (index out of bounds, carriage return handling) that manual tests missed
-  - Runs 100 examples per test by default
+    - 20 property tests in `test_hypothesis_properties.py`
+    - Tests invariants like "chunks never exceed size", "metadata always preserved", "cleaners converge"
+    - Found 2 critical bugs (index out of bounds, carriage return handling) that manual tests missed
+    - Runs 100 examples per test by default
 - **Metadata preservation tests**: Ensure metadata integrity across operations
 - **Performance tests**: Marked with `@pytest.mark.slow`, require 15x speedup and 15k docs/sec
 - **Multi-version tests**: nox runs tests against Python 3.10, 3.11, 3.12, 3.13
@@ -242,9 +242,9 @@ GitHub Actions workflow (`.github/workflows/CI.yml`) has three job groups:
 **Build Jobs:**
 
 - Builds wheels for multiple platforms:
-  - Linux: x86_64, x86, aarch64, armv7, s390x, ppc64le
-  - Windows: x64, x86
-  - macOS: x86_64, aarch64
+    - Linux: x86_64, x86, aarch64, armv7, s390x, ppc64le
+    - Windows: x64, x86
+    - macOS: x86_64, aarch64
 - Releases to PyPI automatically on git tags via maturin-action
 
 ### Pre-commit Hooks with prek
