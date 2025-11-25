@@ -1,18 +1,14 @@
 # Changelog
 
+## v0.1.6 (2025-11-25)
+
+### Docs
+
+- **pyproject.toml**: cz commit questions, changelog updates
+
 ## v0.1.5 (2025-11-25)
 
-### Docs
-
-- **pyproject.toml**: enhanced project metadata with expanded classifiers, keywords, and project URLs
-
 ## v0.1.4 (2025-11-25)
-
-### Docs
-
-- **README.md**: added attribution section crediting LangChain, Unstructured.io, and Diataxis
-- **README.md**: updated documentation links to use full GitHub URLs
-- **docs/index.md**: added comprehensive attribution documentation
 
 ## v0.1.3 (2025-11-25)
 
