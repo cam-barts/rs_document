@@ -395,11 +395,45 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ needs.bump-version.outputs.tag }}
-      - name: Create GitHub Release
+
+      - name: Extract current version changelog
+        id: changelog
+        run: |
+          # Extract only the current version's changelog entry
+          VERSION="${{ needs.bump-version.outputs.version }}"
+
+          # Use awk to extract from current version header to the next version header (or end of file)
+          awk "/^## v${VERSION}/ {flag=1; next} /^## v[0-9]/ {flag=0} flag" CHANGELOG.md > release_notes.md
+
+          # If extraction is empty, try including the header
+          if [ ! -s release_notes.md ]; then
+            awk "/^## v${VERSION}/,/^## v[0-9]/ {print} /^## v[0-9]/ && !/^## v${VERSION}/ {exit}" CHANGELOG.md > release_notes.md
+          fi
+
+          # If still empty, use a default message
+          if [ ! -s release_notes.md ]; then
+            echo "## Release ${{ needs.bump-version.outputs.tag }}" > release_notes.md
+            echo "" >> release_notes.md
+            echo "See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details." >> release_notes.md
+          fi
+
+          echo "Release notes:"
+          cat release_notes.md
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: wheels-*
+          path: dist
+          merge-multiple: true
+
+      - name: Create GitHub Release with artifacts
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ needs.bump-version.outputs.tag }}
           name: Release ${{ needs.bump-version.outputs.tag }}
-          bodyFile: CHANGELOG.md
+          bodyFile: release_notes.md
+          artifacts: "dist/*"
+          artifactContentType: application/octet-stream
           draft: false
           prerelease: false
