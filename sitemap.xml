@@ -2,110 +2,110 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://cam-barts.github.io/rs_document/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/explanation/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/explanation/comparisons/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/explanation/design-philosophy/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/explanation/performance/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/explanation/recursive-splitting/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/explanation/text-cleaning/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/explanation/why-rust/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/how-to/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/how-to/batch-operations/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/how-to/cleaning-tasks/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/how-to/langchain-integration/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/how-to/loading-documents/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/how-to/splitting-tasks/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/how-to/vector-db-prep/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/reference/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/reference/cleaning-methods/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/reference/document-class/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/reference/splitting-methods/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/reference/types-and-constants/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/reference/utility-functions/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/tutorial/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/tutorial/batch-processing/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/tutorial/cleaning/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/tutorial/first-document/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/tutorial/installation/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://cam-barts.github.io/rs_document/tutorial/splitting/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
 </urlset>
