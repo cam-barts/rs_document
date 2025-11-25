@@ -245,41 +245,75 @@ version_provider = "pep621"
 update_changelog_on_bump = true
 major_version_zero = true
 tag_format = "v$version"
+template = "dev/cz_changelog.md.j2"
 version_files = [
     "pyproject.toml:version",
     "Cargo.toml:version",
 ]
 
 [tool.commitizen.customize]
-message_template = "{{change_type}}:{% if show_message %} {{message}}{% endif %}"
-example = "feat: this is a new feature"
-schema = "<type>: <body>"
-schema_pattern = "^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(\\(\\w+\\))?!?:(\\ .*)"
-bump_pattern = "^(BREAKING[- ]CHANGE|feat|fix|refactor|perf|docs|build|chore|ci|test|style)"
-bump_map_major_version_zero = {"BREAKING CHANGE" = "MINOR", "BREAKING-CHANGE" = "MINOR", "feat" = "MINOR", "fix" = "PATCH", "refactor" = "PATCH", "perf" = "PATCH", "docs" = "PATCH", "build" = "PATCH", "chore" = "PATCH", "ci" = "PATCH", "test" = "PATCH", "style" = "PATCH"}
-change_type_order = ["BREAKING CHANGE", "feat", "fix", "refactor", "perf", "docs", "build", "chore", "ci", "test", "style"]
+message_template = "{{prefix}}{% if scope %}({{scope}}){% endif %}{% if is_breaking_change %}!{% endif %}: {{subject}}{% if body %}\n\n{{body}}{% endif %}{% if footer %}\n\n{{footer}}{% endif %}"
+example = "fix: correct minor typos in code\n\nsee the issue for details on the typos fixed\n\ncloses issue #12"
+schema = "<type>(<scope>): <subject>\n<BLANK LINE>\n<body>\n<BLANK LINE>\n(BREAKING CHANGE: )<footer>"
+schema_pattern = "(?s)(build|bump|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\\(\\S+\\))?!?: ([^\\n\\r]+)((\\n\\n.*)|(\\s*))?$"
+commit_parser = "^((?P<change_type>feat|fix|refactor|perf|docs|style|test|build|ci|chore|BREAKING CHANGE)(?:\\((?P<scope>[^()\\r\\n]*)\\)|\\()?(?P<breaking>!)?|\\w+!):\\s(?P<message>.*)?"
+changelog_pattern = "^((BREAKING[\\-\\ ]CHANGE|\\w+)(\\(.+\\))?!?):"
+change_type_map = {"feat" = "Feat", "fix" = "Fix", "refactor" = "Refactor", "perf" = "Perf", "docs" = "Docs", "style" = "Style", "test" = "Test", "build" = "Build", "ci" = "CI", "chore" = "Chore"}
+bump_pattern = "^((BREAKING[\\-\\ ]CHANGE|\\w+)(\\(.+\\))?!?):"
+bump_map_major_version_zero = {"^.+!$" = "MINOR", "^BREAKING[\\-\\ ]CHANGE" = "MINOR", "^feat" = "MINOR", "^fix" = "PATCH", "^refactor" = "PATCH", "^perf" = "PATCH", "^docs" = "PATCH", "^build" = "PATCH", "^ci" = "PATCH", "^test" = "PATCH", "^style" = "PATCH", "^chore" = "PATCH"}
 
 [tool.commitizen.customize.bump_map]
-"BREAKING CHANGE" = "MAJOR"
-"BREAKING-CHANGE" = "MAJOR"
-feat = "MINOR"
-fix = "PATCH"
-refactor = "PATCH"
-perf = "PATCH"
-docs = "PATCH"
-build = "PATCH"
-chore = "PATCH"
-ci = "PATCH"
-test = "PATCH"
-style = "PATCH"
+"^.+!$" = "MAJOR"
+"^BREAKING[\\-\\ ]CHANGE" = "MAJOR"
+"^feat" = "MINOR"
+"^fix" = "PATCH"
+"^refactor" = "PATCH"
+"^perf" = "PATCH"
+"^docs" = "PATCH"
+"^build" = "PATCH"
+"^ci" = "PATCH"
+"^test" = "PATCH"
+"^style" = "PATCH"
+"^chore" = "PATCH"
 
 [[tool.commitizen.customize.questions]]
 type = "list"
-name = "change_type"
-choices = [{value = "feat", name = "feat: A new feature"}, {value = "fix", name = "fix: A bug fix"}, {value = "docs", name = "docs: Documentation changes"}, {value = "style", name = "style: Code style changes"}, {value = "refactor", name = "refactor: Code refactoring"}, {value = "perf", name = "perf: Performance improvements"}, {value = "test", name = "test: Test changes"}, {value = "build", name = "build: Build system changes"}, {value = "ci", name = "ci: CI configuration changes"}, {value = "chore", name = "chore: Other changes"}]
+name = "prefix"
 message = "Select the type of change you are committing"
+choices = [
+    {value = "fix", name = "fix: A bug fix. Correlates with PATCH in SemVer", key = "x"},
+    {value = "feat", name = "feat: A new feature. Correlates with MINOR in SemVer", key = "f"},
+    {value = "docs", name = "docs: Documentation only changes", key = "d"},
+    {value = "style", name = "style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)", key = "s"},
+    {value = "refactor", name = "refactor: A code change that neither fixes a bug nor adds a feature", key = "r"},
+    {value = "perf", name = "perf: A code change that improves performance", key = "p"},
+    {value = "test", name = "test: Adding missing or correcting existing tests", key = "t"},
+    {value = "build", name = "build: Changes that affect the build system or external dependencies (example scopes: pip, docker, npm)", key = "b"},
+    {value = "ci", name = "ci: Changes to CI configuration files and scripts (example scopes: GitLabCI)", key = "c"},
+]
 
 [[tool.commitizen.customize.questions]]
 type = "input"
-name = "message"
-message = "Write a short and imperative summary of the code changes: (lower case and no period)"
+name = "scope"
+message = "What is the scope of this change? (class or file name): (press [enter] to skip)\n"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "subject"
+message = "Write a short and imperative summary of the code changes: (lower case and no period)\n"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "body"
+message = "Provide additional contextual information about the code changes: (press [enter] to skip)\n"
+
+[[tool.commitizen.customize.questions]]
+type = "confirm"
+name = "is_breaking_change"
+message = "Is this a BREAKING CHANGE? Correlates with MAJOR in SemVer"
+default = false
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "footer"
+message = "Footer. Information about Breaking Changes and reference issues that this commit closes: (press [enter] to skip)\n"
