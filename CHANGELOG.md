@@ -1,3 +1,16 @@
+## v0.1.2 (2025-11-25)
+
+
+- ci(github-release): improve release notes formatting and add build artifacts
+- - Extract only current version from CHANGELOG instead of entire file
+- Download all wheel artifacts (Linux, Windows, macOS, sdist)
+- Attach artifacts to GitHub release for easy distribution
+- Improved changelog extraction logic with fallback handling
+- This fixes the release page to show clean, readable notes for each release
+with all platform wheels available for download.
+- 🤖 Generated with [Claude Code](https://claude.com/claude-code)
+- Co-Authored-By: Claude <noreply@anthropic.com>
+
 ## v0.1.1 (2025-11-25)
 
 
