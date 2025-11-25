@@ -5,28 +5,40 @@ build-backend = "maturin"
 [project]
 name = "rs_document"
 version = "0.1.4"
-description = "LangChain's Document model, implemented in Rust using pyo3 and maturin"
+description = "High-performance Rust implementation of LangChain's Document model and Unstructured.io's text cleaners for RAG applications"
 requires-python = ">=3.10"
 license = {file = "LICENSE.md"}
-keywords = ["LangChain", "Document", "cleanup", "splitter", "rust", "maturin", "pyo3"]
+keywords = ["LangChain", "Document", "cleanup", "splitter", "rust", "maturin", "pyo3", "RAG", "Unstructured", "text-processing", "performance", "parallel"]
 authors = [
   {name = "Cam Barts", email = "cam@coder.cam"},
 ]
 readme = "README.md"
 classifiers = [
+    "Development Status :: 3 - Alpha",
     "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Text Processing",
     "Topic :: Text Processing :: Filters",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
 [project.urls]
 homepage = "https://github.com/cam-barts/rs_document"
+documentation = "https://cam-barts.github.io/rs_document"
+repository = "https://github.com/cam-barts/rs_document"
+changelog = "https://github.com/cam-barts/rs_document/blob/main/CHANGELOG.md"
+"Issue Tracker" = "https://github.com/cam-barts/rs_document/issues"
 
 [project.optional-dependencies]
 test = [
