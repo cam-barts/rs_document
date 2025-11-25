@@ -403,12 +403,25 @@ jobs:
           VERSION="${{ needs.bump-version.outputs.version }}"
 
           # Use awk to extract from current version header to the next version header (or end of file)
-          awk "/^## v${VERSION}/ {flag=1; next} /^## v[0-9]/ {flag=0} flag" CHANGELOG.md > release_notes.md
+          awk "/^## v${VERSION}/ {flag=1; next} /^## v[0-9]/ {flag=0} flag" CHANGELOG.md > release_notes_raw.md
 
           # If extraction is empty, try including the header
-          if [ ! -s release_notes.md ]; then
-            awk "/^## v${VERSION}/,/^## v[0-9]/ {print} /^## v[0-9]/ && !/^## v${VERSION}/ {exit}" CHANGELOG.md > release_notes.md
+          if [ ! -s release_notes_raw.md ]; then
+            awk "/^## v${VERSION}/,/^## v[0-9]/ {print} /^## v[0-9]/ && !/^## v${VERSION}/ {exit}" CHANGELOG.md > release_notes_raw.md
           fi
+
+          # Clean up the changelog:
+          # - Remove lines that are just "- -" (double bullets)
+          # - Remove lines with just dashes and whitespace
+          # - Remove emoji lines and co-authored lines (already in commit)
+          # - Keep only meaningful content
+          sed -E \
+            -e '/^- -/d' \
+            -e '/^-\s*$/d' \
+            -e '/🤖 Generated with/d' \
+            -e '/Co-Authored-By:/d' \
+            -e '/Signed-off-by:/d' \
+            release_notes_raw.md > release_notes.md
 
           # If still empty, use a default message
           if [ ! -s release_notes.md ]; then
