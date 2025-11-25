@@ -237,3 +237,19 @@ version_files = [
     "pyproject.toml:version",
     "Cargo.toml:version",
 ]
+
+# Custom bump pattern: all conventional commits trigger bumps
+# feat = MINOR, everything else = PATCH
+bump_pattern = "^(feat|fix|docs|build|chore|style|refactor|perf|test|ci)"
+
+[tool.commitizen.bump_map]
+feat = "MINOR"
+fix = "PATCH"
+docs = "PATCH"
+build = "PATCH"
+chore = "PATCH"
+style = "PATCH"
+refactor = "PATCH"
+perf = "PATCH"
+test = "PATCH"
+ci = "PATCH"
