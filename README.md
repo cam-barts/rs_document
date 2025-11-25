@@ -1,9 +1,3 @@
----
-documentation_type: tutorial
-title: RS Document
-description: High-performance Rust implementation of LangChain Document model
----
-
 # RS Document
 
 A high-performance Rust implementation of LangChain's Document model and
