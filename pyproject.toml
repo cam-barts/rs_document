@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "rs_document"
-version = "0.1.7"
+version = "0.1.8"
 description = "High-performance Rust implementation of LangChain's Document model and Unstructured.io's text cleaners for RAG applications"
 requires-python = ">=3.10"
 license = {file = "LICENSE.md"}
@@ -238,7 +238,7 @@ dev = [
 
 [tool.commitizen]
 name = "cz_customize"
-version = "0.1.7"
+version = "0.1.8"
 version_scheme = "semver"
 version_provider = "pep621"
 update_changelog_on_bump = true
