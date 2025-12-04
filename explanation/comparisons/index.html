@@ -2118,38 +2118,14 @@
 <td>Configurable (any %)</td>
 <td><strong>Fixed (~33%)</strong></td>
 </tr>
-<tr>
-<td><strong>Separators</strong></td>
-<td>Configurable (any list)</td>
-<td><strong>Fixed (<code>\n\n</code>, <code>\n</code>, <code>`,</code>""`)</strong></td>
-</tr>
-<tr>
-<td><strong>Splitting Strategies</strong></td>
-<td>Multiple (recursive, character, token)</td>
-<td><strong>Character only</strong></td>
-</tr>
-<tr>
-<td><strong>Token Counting</strong></td>
-<td>Built-in support</td>
-<td>Not available</td>
-</tr>
-<tr>
-<td><strong>Metadata Types</strong></td>
-<td>Any Python object</td>
-<td><strong>Strings only</strong></td>
-</tr>
-<tr>
-<td><strong>Callbacks</strong></td>
-<td>Supported</td>
-<td>Not available</td>
-</tr>
-<tr>
-<td><strong>Ecosystem</strong></td>
-<td>Full LangChain integration</td>
-<td>Standalone</td>
-</tr>
 </tbody>
 </table>
+<p>| <strong>Separators</strong> | Configurable (any list) | <strong>Fixed (<code>\n\n</code>, <code>\n</code>, <code>`,</code>""`)</strong> |
+| <strong>Splitting Strategies</strong> | Multiple (recursive, character, token) | <strong>Character only</strong> |
+| <strong>Token Counting</strong> | Built-in support | Not available |
+| <strong>Metadata Types</strong> | Any Python object | <strong>Strings only</strong> |
+| <strong>Callbacks</strong> | Supported | Not available |
+| <strong>Ecosystem</strong> | Full LangChain integration | Standalone |</p>
 <h3 id="when-to-use-langchain">When to Use LangChain<a class="headerlink" href="#when-to-use-langchain" title="Permanent link">&para;</a></h3>
 <p>Choose LangChain's text splitter when:</p>
 <ol>
@@ -2194,36 +2170,40 @@
 <h3 id="when-to-use-rs_document">When to Use rs_document<a class="headerlink" href="#when-to-use-rs_document" title="Permanent link">&para;</a></h3>
 <p>Choose rs_document when:</p>
 <ol>
-<li><strong>Performance matters</strong>: Processing &gt; 1,000 documents</li>
-<li>rs_document: 15 minutes for 100k docs</li>
 <li>
-<p>LangChain: 6 hours for 100k docs</p>
+<p><strong>Performance matters</strong>: Processing &gt; 1,000 documents</p>
+<ul>
+<li>rs_document: 15 minutes for 100k docs</li>
+<li>LangChain: 6 hours for 100k docs</li>
+</ul>
 </li>
 <li>
 <p><strong>Frequent reprocessing</strong>: Experimenting with chunk sizes</p>
-</li>
+<ul>
 <li>rs_document enables rapid iteration</li>
-<li>
-<p>LangChain creates long wait times</p>
+<li>LangChain creates long wait times</li>
+</ul>
 </li>
 <li>
 <p><strong>Real-time requirements</strong>: Continuous document ingestion</p>
-</li>
+<ul>
 <li>rs_document: ~23,000 docs/sec throughput</li>
-<li>
-<p>LangChain: ~150 docs/sec throughput</p>
+<li>LangChain: ~150 docs/sec throughput</li>
+</ul>
 </li>
 <li>
 <p><strong>Default settings work</strong>: 33% overlap and standard separators sufficient</p>
-</li>
-<li>
-<p>95% of RAG use cases</p>
+<ul>
+<li>95% of RAG use cases</li>
+</ul>
 </li>
 <li>
 <p><strong>Resource constraints</strong>: Limited CPU time or budget</p>
-</li>
+<ul>
 <li>20x less compute time</li>
 <li>20x lower cost</li>
+</ul>
+</li>
 </ol>
 <h3 id="integration-pattern-use-both">Integration Pattern: Use Both<a class="headerlink" href="#integration-pattern-use-both" title="Permanent link">&para;</a></h3>
 <p>Common pattern: Use rs_document for splitting, LangChain for everything else</p>
@@ -2381,30 +2361,34 @@
 </span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="n">chunks</span> <span class="o">=</span> <span class="n">clean_and_split_docs</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </span></code></pre></div>
 <ol>
-<li><strong>Performance critical</strong>: Processing large volumes</li>
+<li>
+<p><strong>Performance critical</strong>: Processing large volumes</p>
+<ul>
 <li>Unstructured.io: 98ms per document for cleaning</li>
 <li>rs_document: 4.2ms per document for cleaning</li>
-<li>
-<p>23x faster</p>
+<li>23x faster</li>
+</ul>
 </li>
 <li>
 <p><strong>Core cleaners sufficient</strong>: Don't need specialized cleaning</p>
-</li>
+<ul>
 <li>5 core cleaners handle most cases</li>
-<li>
-<p>Ligatures, bullets, whitespace, non-ASCII, paragraph grouping</p>
+<li>Ligatures, bullets, whitespace, non-ASCII, paragraph grouping</li>
+</ul>
 </li>
 <li>
 <p><strong>Need advanced splitting</strong>: Recursive algorithm with overlap</p>
-</li>
+<ul>
 <li>Unstructured.io has basic splitting</li>
-<li>
-<p>rs_document has optimized recursive splitting</p>
+<li>rs_document has optimized recursive splitting</li>
+</ul>
 </li>
 <li>
 <p><strong>Resource constraints</strong>: Limited compute budget</p>
-</li>
+<ul>
 <li>15-75x less CPU time for cleaning</li>
+</ul>
+</li>
 </ol>
 <h3 id="integration-pattern-use-both_1">Integration Pattern: Use Both<a class="headerlink" href="#integration-pattern-use-both_1" title="Permanent link">&para;</a></h3>
 <p>Common pattern: Use Unstructured.io for parsing, rs_document for cleaning/splitting</p>
