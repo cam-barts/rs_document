@@ -1,5 +1,14 @@
 # Changelog
 
+# Changelog
+
+
+## v0.1.7 (2025-12-04)
+
+### Docs
+
+- **zensical**: converted from mkdocs to zensical
+
 ## v0.1.6 (2025-11-25)
 
 ### Docs
