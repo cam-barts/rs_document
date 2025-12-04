@@ -33,6 +33,7 @@ LangChain is the most popular framework for building LLM applications and provid
 | **Performance** | Baseline | **20-25x faster** |
 | **Parallelism** | GIL-limited | **True parallel (8x on 8 cores)** |
 | **Chunk Overlap** | Configurable (any %) | **Fixed (~33%)** |
+
 | **Separators** | Configurable (any list) | **Fixed (`\n\n`, `\n`, ``, `""`)** |
 | **Splitting Strategies** | Multiple (recursive, character, token) | **Character only** |
 | **Token Counting** | Built-in support | Not available |
@@ -89,23 +90,23 @@ Choose LangChain's text splitter when:
 Choose rs_document when:
 
 1. **Performance matters**: Processing > 1,000 documents
-   - rs_document: 15 minutes for 100k docs
-   - LangChain: 6 hours for 100k docs
+    - rs_document: 15 minutes for 100k docs
+    - LangChain: 6 hours for 100k docs
 
 2. **Frequent reprocessing**: Experimenting with chunk sizes
-   - rs_document enables rapid iteration
-   - LangChain creates long wait times
+    - rs_document enables rapid iteration
+    - LangChain creates long wait times
 
 3. **Real-time requirements**: Continuous document ingestion
-   - rs_document: ~23,000 docs/sec throughput
-   - LangChain: ~150 docs/sec throughput
+    - rs_document: ~23,000 docs/sec throughput
+    - LangChain: ~150 docs/sec throughput
 
 4. **Default settings work**: 33% overlap and standard separators sufficient
-   - 95% of RAG use cases
+    - 95% of RAG use cases
 
 5. **Resource constraints**: Limited CPU time or budget
-   - 20x less compute time
-   - 20x lower cost
+    - 20x less compute time
+    - 20x lower cost
 
 ### Integration Pattern: Use Both
 
@@ -245,20 +246,20 @@ Choose rs_document when:
    ```
 
 2. **Performance critical**: Processing large volumes
-   - Unstructured.io: 98ms per document for cleaning
-   - rs_document: 4.2ms per document for cleaning
-   - 23x faster
+    - Unstructured.io: 98ms per document for cleaning
+    - rs_document: 4.2ms per document for cleaning
+    - 23x faster
 
 3. **Core cleaners sufficient**: Don't need specialized cleaning
-   - 5 core cleaners handle most cases
-   - Ligatures, bullets, whitespace, non-ASCII, paragraph grouping
+    - 5 core cleaners handle most cases
+    - Ligatures, bullets, whitespace, non-ASCII, paragraph grouping
 
 4. **Need advanced splitting**: Recursive algorithm with overlap
-   - Unstructured.io has basic splitting
-   - rs_document has optimized recursive splitting
+    - Unstructured.io has basic splitting
+    - rs_document has optimized recursive splitting
 
 5. **Resource constraints**: Limited compute budget
-   - 15-75x less CPU time for cleaning
+    - 15-75x less CPU time for cleaning
 
 ### Integration Pattern: Use Both
 

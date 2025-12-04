@@ -15,28 +15,28 @@ prek is a reimagined version of pre-commit, built in Rust. It's designed to be a
 ## Why prek over pre-commit?
 
 1. **Faster Performance** 🚀
-   - Written in Rust for maximum speed
-   - Significantly faster than Python-based pre-commit
-   - Smaller disk footprint
+    - Written in Rust for maximum speed
+    - Significantly faster than Python-based pre-commit
+    - Smaller disk footprint
 
 2. **No Dependencies** 📦
-   - Single binary with no runtime dependencies
-   - No Python installation required for the tool itself
-   - Easier to install and maintain
+    - Single binary with no runtime dependencies
+    - No Python installation required for the tool itself
+    - Easier to install and maintain
 
 3. **Built-in uv Integration** 🔧
-   - Native support for uv package manager
-   - Better Python environment handling
-   - Faster hook execution for Python-based tools
+    - Native support for uv package manager
+    - Better Python environment handling
+    - Faster hook execution for Python-based tools
 
 4. **Drop-in Compatible** ✅
-   - Uses the same `.pre-commit-config.yaml` format
-   - No configuration changes needed
-   - All existing hooks work as-is
+    - Uses the same `.pre-commit-config.yaml` format
+    - No configuration changes needed
+    - All existing hooks work as-is
 
 5. **Monorepo Support** 🏗️
-   - Built-in workspace mode
-   - Better handling of multi-project repositories
+    - Built-in workspace mode
+    - Better handling of multi-project repositories
 
 ## Installation
 
@@ -154,21 +154,21 @@ repos:
 ## Hooks in This Project
 
 1. **Standard Pre-commit Hooks**
-   - `trailing-whitespace`: Remove trailing whitespace
-   - `end-of-file-fixer`: Ensure files end with newline
-   - `check-yaml`: Validate YAML files
-   - `check-toml`: Validate TOML files
-   - `check-added-large-files`: Prevent large files
-   - `check-merge-conflict`: Check for merge conflicts
-   - `mixed-line-ending`: Ensure consistent line endings
+    - `trailing-whitespace`: Remove trailing whitespace
+    - `end-of-file-fixer`: Ensure files end with newline
+    - `check-yaml`: Validate YAML files
+    - `check-toml`: Validate TOML files
+    - `check-added-large-files`: Prevent large files
+    - `check-merge-conflict`: Check for merge conflicts
+    - `mixed-line-ending`: Ensure consistent line endings
 
 2. **Ruff (Python Linting & Formatting)**
-   - `ruff`: Lint Python code with auto-fix
-   - `ruff-format`: Format Python code
+    - `ruff`: Lint Python code with auto-fix
+    - `ruff-format`: Format Python code
 
 3. **Rust Tooling**
-   - `cargo-fmt`: Format Rust code
-   - `cargo-clippy`: Lint Rust code
+    - `cargo-fmt`: Format Rust code
+    - `cargo-clippy`: Lint Rust code
 
 ## Troubleshooting
 

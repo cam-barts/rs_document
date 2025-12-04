@@ -162,7 +162,8 @@ rs_document requires metadata to be `dict[str, str]`—both keys and values must
 
 ### Why This Limitation Exists
 
-**Serialization Reliability**
+#### Serialization Reliability
+
 Strings always serialize correctly to JSON, databases, and file formats:
 
 ```python
@@ -175,21 +176,24 @@ metadata = {"page": 5, "source": Path("doc.pdf")}
 json.dumps(metadata)  # ✗ TypeError: Object of type Path is not JSON serializable
 ```
 
-**Performance**
+#### Performance
+
 Simple types are faster to copy and compare in Rust. No need to:
 
 - Handle arbitrary Python objects
 - Implement complex type conversions
 - Manage reference counting across language boundary
 
-**Simplicity**
+#### Simplicity
+
 Avoiding complex types simplifies the Rust-Python interface:
 
 - No custom serialization logic
 - No special cases for different types
 - Predictable behavior
 
-**Sufficiency**
+#### Sufficiency
+
 Metadata for RAG typically includes:
 
 - Document identifiers (strings)
@@ -260,7 +264,8 @@ Cleaning methods (`.clean()`, `.clean_bullets()`, etc.) modify the document in-p
 
 ### Why Mutation for Cleaning
 
-**Memory Efficiency**
+#### Memory Efficiency
+
 Cleaning involves multiple string operations. In-place mutation means:
 
 ```rust
@@ -283,14 +288,16 @@ let text4 = text3.clean_bullets();    // New allocation
 
 For large documents, this difference is significant.
 
-**Performance**
+#### Performance
+
 In-place operations are faster:
 
 - No memory allocation overhead
 - Better CPU cache utilization
 - Fewer garbage collection cycles
 
-**Explicit State**
+#### Explicit State
+
 Mutation makes it clear the document has changed:
 
 ```python
@@ -339,7 +346,8 @@ Splitting methods (`.recursive_character_splitter()`, `.split_on_num_characters(
 
 ### Why Immutability for Splitting
 
-**Logical Semantics**
+#### Logical Semantics
+
 One document becomes many—mutation doesn't make semantic sense:
 
 ```python
@@ -350,7 +358,8 @@ doc.split(chunk_size=100)  # How do you represent multiple chunks in one documen
 
 Returning a list of new documents is the natural representation.
 
-**Metadata Preservation**
+#### Metadata Preservation
+
 Each chunk needs the original metadata:
 
 ```python
@@ -364,7 +373,8 @@ for chunk in chunks:
 
 Creating new documents makes metadata copying explicit and correct.
 
-**Safety**
+#### Safety
+
 Original document remains unchanged:
 
 ```python

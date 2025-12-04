@@ -269,12 +269,14 @@ Chunk 2:                   ====CCCC====DDDD====EEEE====
 
 This overlap is critical for retrieval:
 
-**Without Overlap**
+#### Without Overlap
+
 Query: "How does CCCC relate to BBBB?"
 
 - Might miss the connection if they're in different chunks
 
-**With Overlap**
+#### With Overlap
+
 Query: "How does CCCC relate to BBBB?"
 
 - Chunk 0 contains both BBBB and CCCC

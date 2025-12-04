@@ -329,17 +329,17 @@ pytest --cov=rs_document  # looks for installed package
 ## Future Improvements
 
 1. **Rust Coverage Integration**
-   - Add Rust coverage to CI when toolchain is updated to 1.82+
-   - Combine Python and Rust coverage reports in PR comments
+    - Add Rust coverage to CI when toolchain is updated to 1.82+
+    - Combine Python and Rust coverage reports in PR comments
 
 2. **Coverage Badges**
-   - Generate coverage badge from CI
-   - Display badge in README.md
+    - Generate coverage badge from CI
+    - Display badge in README.md
 
 3. **Differential Coverage**
-   - Highlight coverage changes for modified files
-   - Require 100% coverage for new code
-   - Show before/after comparison in PR comments
+    - Highlight coverage changes for modified files
+    - Require 100% coverage for new code
+    - Show before/after comparison in PR comments
 
 ## Contributing
 
@@ -362,4 +362,4 @@ When adding new features:
 See also:
 
 - [CONTRIBUTING.md](contributing.md) - Development workflow
-- [README.md](index.md) - Project overview
+- [README.md](../README.md) - Project overview

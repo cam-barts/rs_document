@@ -316,3 +316,11 @@ default = false
 type = "input"
 name = "footer"
 message = "Footer. Information about Breaking Changes and reference issues that this commit closes: (press [enter] to skip)\n"
+
+[tool.rumdl]
+# Disabled rules (converted from .markdownlint.json)
+disable = ["MD013", "MD024", "MD025", "MD060"]
+
+[tool.rumdl.MD007]
+# List indentation: 4 spaces
+indent = 4
