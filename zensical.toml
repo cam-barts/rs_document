@@ -1,0 +1,110 @@
+[project]
+site_name = "RS Document"
+site_description = "High-performance Rust implementation of LangChain Document model and Unstructured.io text cleaners"
+site_url = "https://cam-barts.github.io/rs_document"
+repo_url = "https://github.com/cam-barts/rs_document"
+repo_name = "rs_document"
+
+nav = [
+  { "Home" = "index.md" },
+  { "Tutorial" = [
+    "tutorial/index.md",
+    { "Installation" = "tutorial/installation.md" },
+    { "First Document" = "tutorial/first-document.md" },
+    { "Cleaning Text" = "tutorial/cleaning.md" },
+    { "Splitting Documents" = "tutorial/splitting.md" },
+    { "Batch Processing" = "tutorial/batch-processing.md" },
+  ]},
+  { "How-To Guides" = [
+    "how-to/index.md",
+    { "Loading Documents" = "how-to/loading-documents.md" },
+    { "Cleaning Tasks" = "how-to/cleaning-tasks.md" },
+    { "Splitting Tasks" = "how-to/splitting-tasks.md" },
+    { "Batch Operations" = "how-to/batch-operations.md" },
+    { "LangChain Integration" = "how-to/langchain-integration.md" },
+    { "Vector DB Preparation" = "how-to/vector-db-prep.md" },
+  ]},
+  { "Reference" = [
+    "reference/index.md",
+    { "Document Class" = "reference/document-class.md" },
+    { "Cleaning Methods" = "reference/cleaning-methods.md" },
+    { "Splitting Methods" = "reference/splitting-methods.md" },
+    { "Utility Functions" = "reference/utility-functions.md" },
+    { "Types & Constants" = "reference/types-and-constants.md" },
+  ]},
+  { "Explanation" = [
+    "explanation/index.md",
+    { "Why Rust?" = "explanation/why-rust.md" },
+    { "Design Philosophy" = "explanation/design-philosophy.md" },
+    { "Recursive Splitting" = "explanation/recursive-splitting.md" },
+    { "Text Cleaning" = "explanation/text-cleaning.md" },
+    { "Performance" = "explanation/performance.md" },
+    { "Comparisons" = "explanation/comparisons.md" },
+  ]},
+]
+
+[project.theme]
+name = "material"
+
+# Light/dark mode toggle
+[[project.theme.palette]]
+scheme = "default"
+primary = "deep orange"
+accent = "orange"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+scheme = "slate"
+primary = "deep orange"
+accent = "orange"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+[project.theme.features]
+navigation.instant = true
+navigation.tracking = true
+navigation.tabs = true
+navigation.sections = true
+navigation.expand = true
+navigation.top = true
+search.suggest = true
+search.highlight = true
+content.code.copy = true
+content.code.annotate = true
+
+# Markdown extensions
+[project.markdown_extensions]
+pymdownx.highlight = { anchor_linenums = true, line_spans = "__span", pygments_lang_class = true }
+pymdownx.inlinehilite = {}
+pymdownx.snippets = {}
+pymdownx.superfences = {}
+pymdownx.tabbed = { alternate_style = true }
+admonition = {}
+pymdownx.details = {}
+pymdownx.emoji = { emoji_index = "zensical.extensions.emoji.twemoji", emoji_generator = "zensical.extensions.emoji.to_svg" }
+attr_list = {}
+md_in_html = {}
+tables = {}
+toc = { permalink = true }
+
+# Plugins
+[project.plugins]
+search = {}
+
+[project.plugins.mkdocstrings]
+handlers.python.paths = ["python"]
+handlers.python.options.docstring_style = "numpy"
+handlers.python.options.show_source = true
+handlers.python.options.show_root_heading = true
+handlers.python.options.show_symbol_type_heading = true
+handlers.python.options.show_symbol_type_toc = true
+
+# Social links
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/cam-barts/rs_document"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/python"
+link = "https://pypi.org/project/rs-document/"
